@@ -1,1 +1,1 @@
-# redux-basic-crud-app-with-saga
+Sample application with redux saga redux-toolkit for simple crud operation

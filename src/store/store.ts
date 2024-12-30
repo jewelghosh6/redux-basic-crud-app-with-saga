@@ -1,26 +1,26 @@
-// src/store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import postsReducer from './reducers/PostSlice';
 import usersReducer from './reducers/UserSlice';
-
 import { postsSaga } from './saga/postsSaga';
 import { watchUserActions } from './saga/userSaga';
 
-// import usersReducer from './UserSlice';
-
+// Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
 
+// Configure the Redux store
 const store = configureStore({
   reducer: {
-    users: usersReducer,
-    posts: postsReducer,
+    users: usersReducer, // Regular users reducer
+    posts: postsReducer, // Regular posts reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
-  devTools: true,
+    getDefaultMiddleware({ thunk: false }) // Disable thunk, since RTK Query handles async actions
+      .concat(sagaMiddleware),// Add saga middleware
+  devTools: true, // Enable Redux DevTools extension
 });
 
+// Run saga watchers
 sagaMiddleware.run(postsSaga);
 sagaMiddleware.run(watchUserActions);
 

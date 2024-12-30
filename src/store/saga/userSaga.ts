@@ -20,7 +20,7 @@ const API_URL = 'https://dummyjson.com/users';
 
 function* fetchUsers(): Generator {
   try {
-    const response = yield call(axios.get, API_URL);
+    const response = yield call(axios.get, `${API_URL}?limit=500`);
     yield put(fetchUsersSuccess(response.data.users)); // assuming 'users' is the response key
   } catch (error:any) {
     yield put(fetchUsersFailure(error.message));

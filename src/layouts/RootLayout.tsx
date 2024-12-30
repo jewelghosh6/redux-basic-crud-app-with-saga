@@ -10,7 +10,7 @@ export const RootLayout = () => {
                  justifyContent: "end",
                  alignItems: "center",
                  width: "100%",
-                 zIndex: 1000,
+                 zIndex: 1,
                  padding: "12px 24px",
                  height: "64px",
                  boxShadow: "rgb(234, 234, 234) 0px -1px 0px 0px inset",
@@ -23,9 +23,9 @@ export const RootLayout = () => {
                  color: "rgb(0, 0, 0)",
                  fontFamily: "Inter, sans-serif",
                     }}>
-                <span><Link style={{textDecoration: "none"}} to="/">Home</Link></span>
-                <span><Link style={{textDecoration: "none"}} to="/about">About</Link></span>
-                <span><Link style={{textDecoration: "none"}} to="/users">Users</Link></span>
+                <span><Link className="nav-header-link" to="/">Home</Link></span>
+                <span><Link className="nav-header-link" to="/about">About</Link></span>
+                <span><Link className="nav-header-link" to="/users">Users</Link></span>
             </div>
 
             <div style={{padding: "20px"}}>

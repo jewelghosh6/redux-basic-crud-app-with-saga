@@ -16,8 +16,10 @@ import {
 import { Post, Reactions } from '../types/types';
 import { IconTrash, IconEdit } from '@tabler/icons-react';
 import { updatePostRequest } from '../store/reducers/PostSlice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store/store';
+import { selectUserDetailsByUserId } from '../store/selectors/userSelector';
+// import { UserState } from '../store/reducers/UserSlice';
 
 interface PostProps {
   post: Post;
@@ -29,6 +31,18 @@ const PostComponent: React.FC<PostProps> = ({ post, onDelete }) => {
   const [formData, setFormData] = useState<Post>({ ...post });
   const dispatch = useDispatch<AppDispatch>();
 
+  const { user } = useSelector((state: RootState) =>
+  {
+    console.log('state', state,formData.userId);
+    
+    return selectUserDetailsByUserId( state, formData.userId )
+  }
+  );
+  
+  // const { users } = useSelector((state: RootState) => state.users);
+  
+  console.log('User:', user);
+  
 
   const handleChange = <K extends keyof Post>(field: K, value: Post[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -130,13 +144,15 @@ const PostComponent: React.FC<PostProps> = ({ post, onDelete }) => {
           <Group>
             {/* Randomly Generated Avatar */}
             <Avatar
-              src={`https://api.dicebear.com/6.x/initials/svg?seed=${Math.random()
-                .toString(36)
-                .substring(7)}`}
+              // src={`https://api.dicebear.com/6.x/initials/svg?seed=${Math.random()
+              //   .toString(36)
+              //   .substring(7)}`}
+              src={user?.image }
               radius="xl"
               size="lg"
             />
             <div>
+              <h3>{user?.firstName + ' ' + user?.lastName}</h3>
               <Text style={{ fontWeight: 500 }} size="lg">
                 {post.title}
               </Text>

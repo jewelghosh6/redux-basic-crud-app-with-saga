@@ -27,8 +27,8 @@ function* fetchPostsSaga(): Generator  {
 
 function* addPostSaga(action: any): Generator {
   try {
-    const response = yield call(axios.post, API_URL, action.payload);
-    yield put(addPostSuccess(response.data.posts));
+    const response = yield call(axios.post, `${API_URL}/add`, action.payload);
+    yield put(addPostSuccess(response.data));
   } catch (error: any) {
     yield put(fetchPostsFailure(error.message));
   }

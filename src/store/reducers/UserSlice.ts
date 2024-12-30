@@ -1,8 +1,7 @@
-// src/store/slices/userSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../../types/types';
 
-interface UserState {
+export interface UserState {
   users: User[];
   loading: boolean;
   error: string | null;
@@ -19,8 +18,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     fetchUsersRequest(state) {
-      state.loading = true;
-      state.error = null;
+      if (state.users.length === 0){
+        state.loading = true;
+        state.error = null;
+      }
     },
     fetchUsersSuccess(state, action: PayloadAction<User[]>) {
       state.loading = false;
@@ -69,7 +70,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-  },
+  }
 });
 
 export const {

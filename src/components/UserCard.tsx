@@ -59,6 +59,11 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
               src={user.image || `https://api.dicebear.com/6.x/initials/svg?seed=${user.firstName}`}
               radius="xl"
               size="lg"
+              style={ {
+                marginRight: 4,
+                border: "1px solid #c1c1c1",
+                padding: "5px"
+              } }
             />
             <div>
               <Text style={{ fontWeight: 500 }} size="lg">

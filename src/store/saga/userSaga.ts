@@ -14,7 +14,7 @@ import {
   deleteUserRequest,
   deleteUserSuccess,
   deleteUserFailure,
-} from '../slice(reducers)/userSlice';
+} from '../reducers/UserSlice';
 
 const API_URL = 'https://dummyjson.com/users';
 

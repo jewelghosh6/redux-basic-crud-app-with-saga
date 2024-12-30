@@ -15,7 +15,7 @@ import {
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
-import { deleteUserRequest, updateUserRequest } from '../store/slice(reducers)/userSlice';
+import { deleteUserRequest, updateUserRequest } from '../store/reducers/UserSlice';
 import { User } from '../types/types';
 
 interface UserCardProps {
@@ -41,7 +41,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
   };
 
   const handleUpdateUser= () => {
-    console.log('Updated User:', formData); // Simulate saving
+    // console.log('Updated User:', formData); // Simulate saving
     setOpenedEditModal(false);
     dispatch(updateUserRequest(formData));
   }

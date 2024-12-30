@@ -15,7 +15,7 @@ import {
 } from '@mantine/core';
 import { Post, Reactions } from '../types/types';
 import { IconTrash, IconEdit } from '@tabler/icons-react';
-import { updatePostRequest } from '../store/slice(reducers)/PostSlice';
+import { updatePostRequest } from '../store/reducers/PostSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store/store';
 

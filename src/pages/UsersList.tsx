@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "../store/store";
 import { useEffect } from "react";
 // import { fetchPostsRequest } from "../store/slice(reducers)/PostSlice";
 import UserCard from "../components/UserCard";
-import { fetchUsersRequest } from "../store/slice(reducers)/userSlice";
+import { fetchUsersRequest } from "../store/reducers/UserSlice";
 import { Container } from "@mantine/core";
 
 
@@ -20,7 +20,7 @@ export const UsersList = () => {
     if (error) return <p>Error: {error}</p>;
     
     return (
-        <Container mt={"md"} >
+        <Container mt={"md"} p={20} style={{boxShadow: "0px 10px 15px 7px rgba(0,0,0,0.1)"}}>
             {
                 users.map(user => (
                     <UserCard key={user.id} user={user}/>

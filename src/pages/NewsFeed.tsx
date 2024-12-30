@@ -5,7 +5,7 @@ import {
   fetchPostsRequest,
   addPostRequest,
   deletePostRequest,
-} from '../store/slice(reducers)/PostSlice';
+} from '../store/reducers/PostSlice';
 import PostComponent from '../components/Post';
 import { Container } from '@mantine/core';
 

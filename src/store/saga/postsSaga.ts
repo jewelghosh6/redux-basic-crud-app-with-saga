@@ -11,7 +11,7 @@ import {
   addPostSuccess,
   updatePostSuccess,
   deletePostSuccess,
-} from '../slice(reducers)/PostSlice';
+} from '../reducers/PostSlice';
 
 const API_URL = 'https://dummyjson.com/posts';
 

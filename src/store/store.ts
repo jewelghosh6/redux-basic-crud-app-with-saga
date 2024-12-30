@@ -1,8 +1,8 @@
 // src/store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import postsReducer from './slice(reducers)/PostSlice';
-import usersReducer from './slice(reducers)/userSlice';
+import postsReducer from './reducers/PostSlice';
+import usersReducer from './reducers/UserSlice';
 
 import { postsSaga } from './saga/postsSaga';
 import { watchUserActions } from './saga/userSaga';

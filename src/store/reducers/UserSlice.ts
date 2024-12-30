@@ -50,7 +50,7 @@ const userSlice = createSlice({
     //   state.loading = false;
       const index = state.users.findIndex(user => user.id === action.payload.id);
       if (index !== -1) {
-        state.users[index] = action.payload;
+        state.users[index] = {...state.users[index],...action.payload};
       }
     },
     updateUserFailure(state, action: PayloadAction<string>) {

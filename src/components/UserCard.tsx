@@ -12,11 +12,14 @@ import {
   ActionIcon,
   NumberInput,
 } from '@mantine/core';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../store/store';
-import { deleteUserRequest, updateUserRequest } from '../store/reducers/UserSlice';
+import { IconEdit, IconTrash, IconEye } from '@tabler/icons-react';
+// import { useDispatch } from 'react-redux';
+// import { AppDispatch } from '../store/store';
+// import { deleteUserRequest, updateUserRequest } from '../store/reducers/UserSlice';
 import { User } from '../types/types';
+import { useDeleteUserMutation, useUpdateUserMutation } from '../store/api/UserApiSlice';
+import { notifications } from '@mantine/notifications';
+import { useNavigate } from 'react-router-dom';
 
 interface UserCardProps {
   user: User;
@@ -26,7 +29,10 @@ interface UserCardProps {
 const UserCard: React.FC<UserCardProps> = ({ user }) => {
   const [openedEditModal, setOpenedEditModal] = useState(false);
   const [formData, setFormData] = useState<User>({ ...user });
-  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  // const dispatch = useDispatch<AppDispatch>();
+  const [updateUser] = useUpdateUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
 
   const handleChange = (field: keyof User, value: string | number) => {
@@ -40,14 +46,63 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
     }));
   };
 
-  const handleUpdateUser= () => {
+  const handleUpdateUser= async() => {
     // console.log('Updated User:', formData); // Simulate saving
     setOpenedEditModal(false);
-    dispatch(updateUserRequest(formData));
+    // dispatch(updateUserRequest(formData));
+    try {
+      const result = await updateUser(formData).unwrap();
+      console.log('Result:', result);
+      notifications.show({
+        title: 'Success',
+        message: 'User updated successfully',
+        color: 'green',
+        position: 'top-right',
+      });
+      
+    } catch (error) {
+      console.error("Error updating user:", error);
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to update user',
+        color: 'red',
+        position: 'top-right',
+      });
+    }
+
   }
 
-  const userDeleteHandler = () => {
-    dispatch(deleteUserRequest(user.id));
+  const userDeleteHandler =async () => {
+    // dispatch(deleteUserRequest(user.id));
+    const notificationId = notifications.show({
+      title: 'Deleting User',
+      message: 'Please wait...',
+      color: 'yellow',
+      position: 'top-right',
+      loading: true
+    });
+    try {
+      const result =await deleteUser(user.id).unwrap();
+      console.log('Result:', result);
+      notifications.update({
+        id: notificationId,
+        title: 'Success',
+        message: 'User deleted successfully',
+        color: 'green',
+        position: 'top-right',
+        loading: false
+      });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      notifications.update({
+        id: notificationId,
+        title: 'Error',
+        message: 'Failed to delete user',
+        color: 'red',
+        position: 'top-right',
+        loading: false
+      });
+    }
   };
 
   return (
@@ -75,6 +130,9 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
             </div>
           </Group>
           <Group style={{ gap: 10 }}>
+            <ActionIcon color="green" variant="light" onClick={() => navigate(`/users/${user.id}`)}>
+              <IconEye size={20} />
+            </ActionIcon>
             <ActionIcon color="blue" variant="light" onClick={() => setOpenedEditModal(true)}>
               <IconEdit size={20} />
             </ActionIcon>

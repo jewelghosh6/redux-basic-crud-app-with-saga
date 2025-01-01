@@ -12,36 +12,43 @@ import {
   NumberInput,
   Avatar,
   ActionIcon,
+  Title,
 } from '@mantine/core';
 import { Post, Reactions } from '../types/types';
 import { IconTrash, IconEdit } from '@tabler/icons-react';
-import { updatePostRequest } from '../store/reducers/PostSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../store/store';
-import { selectUserDetailsByUserId } from '../store/selectors/userSelector';
+// import { updatePostRequest } from '../store/reducers/PostSlice';
+import {  useSelector } from 'react-redux';
+// import { AppDispatch, RootState } from '../store/store';
+import { selectUserById } from '../store/selectors/userSelector';
+import { useDeletePostMutation, useUpdatePostMutation } from '../store/api/PostApiSlice';
+import { notifications } from '@mantine/notifications';
 // import { UserState } from '../store/reducers/UserSlice';
 
 interface PostProps {
   post: Post;
-  onDelete: (id: number) => void; // Callback for deleting the post
 }
 
-const PostComponent: React.FC<PostProps> = ({ post, onDelete }) => {
+const PostComponent: React.FC<PostProps> = ({ post }) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [formData, setFormData] = useState<Post>({ ...post });
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
+  const [updatePost] = useUpdatePostMutation();
+  const [deletePost] = useDeletePostMutation();
 
-  const { user } = useSelector((state: RootState) =>
-  {
-    console.log('state', state,formData.userId);
+
+  const user = useSelector(selectUserById(formData.userId))
+
+  // const { user } = useSelector((state: RootState) =>
+  // {
+  //   console.log('state', state,formData.userId);
     
-    return selectUserDetailsByUserId( state, formData.userId )
-  }
-  );
+  //   return selectUserDetailsByUserId( state, formData.userId )
+  // }
+  // );
   
   // const { users } = useSelector((state: RootState) => state.users);
   
-  console.log('User:', user);
+  // console.log('User:', user);
   
 
   const handleChange = <K extends keyof Post>(field: K, value: Post[K]) => {
@@ -58,7 +65,7 @@ const PostComponent: React.FC<PostProps> = ({ post, onDelete }) => {
     }));
   };
 
-  const handleUpdatePost = () => {
+  const handleUpdatePost = async() => {
     // const updatedPost = {
     //   id,
     //   title: 'Updated Post Title',
@@ -70,7 +77,49 @@ const PostComponent: React.FC<PostProps> = ({ post, onDelete }) => {
     // };
     console.log('Updated Post Data:', formData); // Simulate saving data
     setOpened(false);
-    dispatch(updatePostRequest(formData));
+    // dispatch(updatePostRequest(formData));
+
+    try {
+      const result = await updatePost(formData as any).unwrap();
+      console.log('Result: after update', result);
+      
+      
+    } catch (error) {
+      console.log('Error updating post:', error);
+      
+    }
+  };
+
+  const handleDeletePost = async() => {
+    const notificationId=notifications.show({
+      title: 'Deleting Post',
+      message: 'Please wait...',
+      color: 'yellow',
+      position: 'top-right',
+      loading: true
+    })
+    try {
+     const result = await deletePost(post.id).unwrap();
+      console.log('Result: after delete', result);
+      notifications.update({
+        id: notificationId,
+        title: 'Success',
+        message: 'Post deleted successfully',
+        color: 'green',
+        position: 'top-right',
+        loading: false,
+      })
+      
+    } catch (error) {
+      notifications.update({
+          id: notificationId,
+          title: 'Error',
+          message: 'Failed to delete post',
+          color: 'red',
+          position: 'top-right',
+          loading: false,
+        })
+    }
   };
 
   return (
@@ -152,7 +201,7 @@ const PostComponent: React.FC<PostProps> = ({ post, onDelete }) => {
               size="lg"
             />
             <div>
-              <h3>{user?.firstName + ' ' + user?.lastName}</h3>
+              <Title order={3}>{user?.firstName + ' ' + user?.lastName}</Title>
               <Text style={{ fontWeight: 500 }} size="lg">
                 {post.title}
               </Text>
@@ -172,7 +221,7 @@ const PostComponent: React.FC<PostProps> = ({ post, onDelete }) => {
             <ActionIcon
               color="red"
               variant="light"
-              onClick={() => onDelete(post.id)}
+              onClick={handleDeletePost}
             >
               <IconTrash size={20} />
             </ActionIcon>

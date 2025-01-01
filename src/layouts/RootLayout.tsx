@@ -24,6 +24,7 @@ export const RootLayout = () => {
                  fontFamily: "Inter, sans-serif",
                     }}>
                 <span><Link className="nav-header-link" to="/">Home</Link></span>
+                <span><Link className="nav-header-link" to="/feed">Feed</Link></span>
                 <span><Link className="nav-header-link" to="/about">About</Link></span>
                 <span><Link className="nav-header-link" to="/users">Users</Link></span>
             </div>

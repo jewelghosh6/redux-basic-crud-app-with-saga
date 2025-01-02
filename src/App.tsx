@@ -6,13 +6,15 @@ import { UsersList } from "./pages/UsersList";
 import { RootLayout } from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import UserDetails from "./components/UserDetails";
+import SignIn from "./pages/SignIn";
 
 export const  App =() =>{
   return (
       <BrowserRouter>
         <Routes >
+          <Route path="/" element={<SignIn />} />
           <Route element={<RootLayout />} >
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/feed" element={<NewsFeed />} />
             <Route path="/about" element={<About />} />
             <Route path="/users" element={<UsersList />} />

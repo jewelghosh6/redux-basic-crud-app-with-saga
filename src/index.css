@@ -13,3 +13,23 @@
   padding: 20px !important;
   box-shadow: 0px 10px 15px 7px rgba(0,0,0,0.1);
 }
+.navbar {
+  position: sticky;
+  top: 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  z-index: 1;
+  padding: 12px 24px;
+  height: 64px;
+  box-shadow: rgb(234, 234, 234) 0px -1px 0px 0px inset;
+  transform: translateZ(0px);
+  backdrop-filter: saturate(180%) blur(4px);
+  background: rgba(255, 255, 255, 0.8);
+  gap: 31px;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgb(0, 0, 0);
+  font-family: "Inter", sans-serif;
+}

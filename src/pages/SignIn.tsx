@@ -1,6 +1,7 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextInput, PasswordInput, Button, Box, Text, Center, Title, Stack, em } from '@mantine/core';
+import { TextInput, PasswordInput, Button, Box, Text, Center, Title, Stack, Divider } from '@mantine/core';
+import { IconAt, IconLock, IconKey, IconArrowRight } from '@tabler/icons-react';
 import { loginRequest, verify2FA } from '../store/reducers/AuthSlice';
 import { RootState } from '../store/store';
 import { useNavigate } from 'react-router-dom';
@@ -8,60 +9,80 @@ import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [otp, setOtp] = useState('');
-  const navigate =useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Select authentication state from Redux
-  const { is2FAFormVisible, loginError, verifyError, isAuthenticated } = useSelector((state:RootState) => state.auth);
+  const { is2FAFormVisible, loginError, verifyError, isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
-    // Redirect to home page on successful 2FA verification
     if (isAuthenticated) {
-        navigate('/feed'); // Redirect to feed page
+      navigate('/feed'); // Redirect to feed page
     }
-    }, [isAuthenticated]);
+  }, [isAuthenticated]);
 
   const handleLogin = () => {
-      if (credentials.email && credentials.password) {
-        console.log(credentials);
-      dispatch(loginRequest({...credentials, trigger_email_login:false }));
+    if (credentials.email && credentials.password) {
+      dispatch(loginRequest({ ...credentials, trigger_email_login: false }));
     }
   };
 
   const handleVerifyOTP = () => {
     if (otp) {
-      dispatch(verify2FA({otp, email:credentials.email}));
+      dispatch(verify2FA({ otp, email: credentials.email }));
     }
   };
 
   return (
-    <Center style={{ height: '100vh', backgroundColor: '#f9fafb' }}>
+    <Center style={{ height: '100vh', backgroundColor: '#f3f4f6' }}>
       <Box
-        style={{ width: '100%', maxWidth: 400, padding: 16, borderRadius: 4, boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff' }}
+        style={{
+          width: '100%',
+          maxWidth: 400,
+          padding: 24,
+          borderRadius: 8,
+          boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
+          backgroundColor: '#ffffff',
+        }}
       >
-        <Stack>
-          <Title order={2} style={{ textAlign: 'center' }}>
-            {is2FAFormVisible ? 'Verify OTP' : 'Sign In'}
+        <Stack style={{ marginTop: 20 }} >
+          <Title order={2}  style={{ color: '#1e293b', fontWeight: 700,textAlign: 'center' }}>
+            {is2FAFormVisible ? 'Verify OTP' : 'Welcome Back'}
           </Title>
+          <Text style={{ textAlign: 'center' }} size="sm" color="dimmed">
+            {is2FAFormVisible ? 'Please enter the OTP sent to your email' : 'Sign in to your account'}
+          </Text>
+          <Divider size="xs" />
 
           {!is2FAFormVisible ? (
             <>
               <TextInput
-                label="Username"
+                label="Email"
                 placeholder="Enter your email"
                 value={credentials.email}
                 onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+                // icon={<IconAt size={18} />}
                 required
-                />
+              />
               <PasswordInput
                 label="Password"
                 placeholder="Enter your password"
                 value={credentials.password}
                 onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                // icon={<IconLock size={18} />}
                 required
-                />
-                {loginError && <Text color="red" size="sm">{loginError}</Text>}
-              <Button fullWidth mt="md" onClick={handleLogin}>
+              />
+              {loginError && (
+                <Text color="red" size="sm" style={{ textAlign: 'center' }}>
+                  {loginError}
+                </Text>
+              )}
+              <Button
+                fullWidth
+                mt="md"
+                onClick={handleLogin}
+                style={{ backgroundColor: '#4f46e5', color: '#ffffff' }}
+                rightSection={<IconArrowRight size={18} />}
+              >
                 Login
               </Button>
             </>
@@ -69,15 +90,28 @@ const SignIn = () => {
             <>
               <TextInput
                 label="OTP"
-                placeholder="Enter the OTP sent to your email"
+                placeholder="Enter the OTP"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
+                // icon={<IconKey size={18} />}
                 required
-                />
-                {verifyError && <Text color="red" size="sm">{verifyError}</Text>}
-              <Button fullWidth mt="md" onClick={handleVerifyOTP}>
-                Verify
-              </Button>
+              />
+              {verifyError && (
+                <Text color="red" size="sm" style={{ textAlign: 'center' }}>
+                  {verifyError}
+                </Text>
+              )}
+             <Button
+                fullWidth
+                mt="md"
+                onClick={handleVerifyOTP}
+                style={{ backgroundColor: '#4f46e5', color: '#ffffff' }}
+                >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                    <span>Login</span>
+                    <IconArrowRight size={18} />
+                </div>
+                </Button>
             </>
           )}
         </Stack>

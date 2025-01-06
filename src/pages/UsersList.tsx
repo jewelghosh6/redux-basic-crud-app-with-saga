@@ -5,8 +5,7 @@ import UserCard from "../components/UserCard";
 // import { fetchUsersRequest } from "../store/reducers/UserSlice";
 import { Button, Container, Group } from "@mantine/core";
 import { useFetchUsersQuery, usersApi } from "../store/api/UserApiSlice";
-
-export const UsersList = () => {
+ const UsersList = () => {
     const dispatch = useDispatch<AppDispatch>();
     // const { users, loading, error } = useSelector((state: RootState) => state.users);
     const { data, isLoading, isError } = useFetchUsersQuery();
@@ -40,3 +39,5 @@ export const UsersList = () => {
         </Container>
     );
 };
+
+export default UsersList;

@@ -8,6 +8,7 @@ import { watchUserActions } from './saga/userSaga';
 import { usersApi } from './api/UserApiSlice';
 import { postsApi } from './api/PostApiSlice';
 import { authSaga } from './saga/AuthSaga';
+import { todoApi } from './api/todoApiSlice';
 
 // Create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -20,10 +21,13 @@ const store = configureStore({
     auth: authReducer, // Regular auth reducer
     [usersApi.reducerPath]: usersApi.reducer,
     [postsApi.reducerPath]: postsApi.reducer,
+    [todoApi.reducerPath]: todoApi.reducer,
+
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware() // Disable thunk, since RTK Query handles async actions
       .concat(usersApi.middleware)
       .concat(postsApi.middleware)
+      .concat(todoApi.middleware)
       .concat(sagaMiddleware), // Add saga middleware
   devTools: true, // Enable Redux DevTools extension
 });

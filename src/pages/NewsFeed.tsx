@@ -11,6 +11,8 @@ import { Container } from '@mantine/core';
 import { useFetchPostsQuery } from '../store/api/PostApiSlice';
 import { useFetchUsersQuery } from '../store/api/UserApiSlice';
 import AddPostForm from '../components/AddPost';
+import useInfiniteScroll from '../hooks/useInfiniteScroll';
+import { Post } from '../types/types';
 
 const NewsFeed: React.FC = () => {
   // const dispatch = useDispatch<AppDispatch>();
@@ -42,6 +44,8 @@ const NewsFeed: React.FC = () => {
   //   dispatch(deletePostRequest(id));
   // };
 
+
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error as string}</p>;
 
@@ -56,6 +60,7 @@ const NewsFeed: React.FC = () => {
         { posts && posts.map((post) => (
           <PostComponent key={post.id} post={post} />
         ))}
+
       </Container>
     </div>
   );

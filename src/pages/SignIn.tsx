@@ -4,7 +4,7 @@ import { TextInput, PasswordInput, Button, Box, Text, Center, Title, Stack, Divi
 import { IconAt, IconLock, IconKey, IconArrowRight } from '@tabler/icons-react';
 import { loginRequest, verify2FA } from '../store/reducers/AuthSlice';
 import { RootState } from '../store/store';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -101,6 +101,14 @@ const SignIn = () => {
                   {verifyError}
                 </Text>
               )}
+                <Link to ="/home" style={{ textDecoration: 'none' }}>
+                  <Button fullWidth mt="md" style={{ backgroundColor: '#4f46e5', color: '#ffffff' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                        <span>Home</span>
+                        <IconArrowRight size={18} />
+                    </div>
+                  </Button>
+                </Link>
              <Button
                 fullWidth
                 mt="md"
@@ -112,6 +120,16 @@ const SignIn = () => {
                     <IconArrowRight size={18} />
                 </div>
                 </Button>
+
+                <Link to="/signup" style={{ textDecoration: 'none' }}>
+                  <Button fullWidth mt="md" style={{ backgroundColor: '#4f46e5', color: '#ffffff' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                        <span>Sign Up</span>
+                        <IconArrowRight size={18} />
+                    </div>
+                  </Button>
+                </Link>
+
             </>
           )}
         </Stack>

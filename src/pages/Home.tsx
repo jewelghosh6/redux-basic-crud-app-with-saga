@@ -1,10 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Badge, Card, Center, Container, Flex, Group, Loader, Text } from "@mantine/core";
+import React, { useState, useEffect } from "react";
+import { Container, Flex, Loader } from "@mantine/core";
 import { useFetchTodosQuery } from "../store/api/todoApiSlice";
 import TodoCard from "../components/ToDoCard";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 const Home: React.FC = () => {
-  const lastElRef = useRef<HTMLDivElement | null>(null); // Reference for IntersectionObserver
   const [page, setPage] = useState<number>(1); // Track current page
   const [allData, setAllData] = useState<any[]>([]); // Accumulated data
   const [hasMore, setHasMore] = useState<boolean>(true); // Indicates if more data exists
@@ -22,37 +22,16 @@ const Home: React.FC = () => {
       });
 
       // If fewer than the page limit (10) items are returned, stop fetching
-      if (data.todos.length < 10) {
+      if (data.todos.length === data.total) {
         setHasMore(false);
       }
     }
   }, [data, isSuccess]);
 
-  // Infinite scrolling logic using IntersectionObserver
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (
-          entries[0].isIntersecting && // Last element is visible
-          hasMore && // There is more data
-          !isFetching // No fetch is in progress
-        ) {
-          setPage((prevPage) => prevPage + 1); // Increment the page
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (lastElRef.current) {
-      observer.observe(lastElRef.current);
-    }
-
-    return () => {
-      if (lastElRef.current) {
-        observer.unobserve(lastElRef.current);
-      }
-    };
-  }, [hasMore, isFetching]);
+  // Use the custom hook for infinite scrolling
+  const lastElRef = useInfiniteScroll(hasMore, isFetching, () => {
+    setPage((prevPage) => prevPage + 1);
+  });
 
   if (isError) return <p>Error fetching data...</p>;
 
@@ -77,14 +56,14 @@ const Home: React.FC = () => {
         <div
           ref={lastElRef}
           style={{
-            height: "50px",
-            background: "transparent",
+            height: "10px",
+            background: "blue",
             marginTop: "20px",
           }}
         />
       </Container>
       <Flex justify="center" style={{ marginTop: "20px" }}>
-        {isFetching && <Loader color="blue" />}
+        {isFetching && <p>Loading... Page: {page}</p>} {isFetching && <Loader color="blue" />}
       </Flex>
       <Flex justify="center" style={{ marginTop: "20px" }}>
         {!hasMore && !isFetching && <p>No more data</p>}

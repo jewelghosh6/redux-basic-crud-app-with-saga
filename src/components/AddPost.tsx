@@ -11,6 +11,8 @@ import {
 } from '@mantine/core';
 import { useCreatePostMutation } from '../store/api/PostApiSlice';
 import { notifications } from '@mantine/notifications';
+import { MentionsInput, Mention } from 'react-mentions'
+
 
 const AddPostForm = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +20,8 @@ const AddPostForm = () => {
     body: '',
     tags: [] as string[],
   });
+
+  const [value, setValue] = useState('');
 
   const [newTag, setNewTag] = useState('');
   const [createPost] = useCreatePostMutation();
@@ -31,6 +35,13 @@ const AddPostForm = () => {
     }
     setNewTag('');
   };
+
+  
+  const users = [
+    { id: "1", display: "Alice" },
+    { id: "2", display: "Bob" },
+    { id: "3", display: "Charlie" },
+  ];
 
   const handleChange = (field: string, value: string | string[]) => {
     setFormData((prev) => ({
@@ -65,16 +76,57 @@ const AddPostForm = () => {
             <Grid gutter="xs">
                 {/* Title and Tags on the same row */}
 
-                <Grid.Col span={6}>
-                    <TextInput
+                <Grid.Col span={12}>
+                    {/* <TextInput
                         label="Title"
                         placeholder="Post title"
                         value={formData.title}
                         onChange={(e) => handleChange('title', e.target.value)}
                         required
-                    />
+                    /> */}
+                   <MentionsInput
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                      style={{
+                        control: {
+                          fontSize: 16,
+                          padding: "5px",
+                          backgroundColor: "#f5f5f5",
+                        },
+                        highlighter: {
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          display: "inline-block",
+                          width: "100%",
+                          backgroundColor: "#e6e6e6",
+                          borderRadius: 4,
+                        },
+                        input: {
+                          margin: 0,
+                        },
+                      }}
+                    >
+                      <Mention
+                        trigger="@"
+                        data={users}
+                        style={{ 
+                          backgroundColor: "#daf4fa" ,
+                          borderRadius: "4px",
+                          padding: "5px",
+                          fontSize: "16px",
+                          margin: "0 0 0 5px",
+                          display: "inline-block",
+                          color: "#2e7d32",
+                          fontWeight: "bold", 
+
+                        }}
+                      />
+                    </MentionsInput>
+                    <p>Input Value: {value}</p>
+
                 </Grid.Col>
-                <Grid.Col span={6}>
+                {/* <Grid.Col span={6}>
                     <MultiSelect
                         label="Tags"
                         placeholder="Select or add tags"
@@ -84,10 +136,10 @@ const AddPostForm = () => {
                         searchable
                         size="sm"
                     />
-                </Grid.Col>
+                </Grid.Col> */}
 
                 {/* Body textarea */}
-                <Grid.Col span={12}>
+                {/* <Grid.Col span={12}>
                     <Textarea
                         label="Body"
                         placeholder="Write your content"
@@ -96,18 +148,18 @@ const AddPostForm = () => {
                         required
                         minRows={4}
                     />
-                </Grid.Col>
+                </Grid.Col> */}
 
                 {/* Tag addition input and Submit */}
-                <Grid.Col span={8}>
+                {/* <Grid.Col span={8}>
                     <TextInput
                         placeholder="Add a new tag"
                         value={newTag}
                         onChange={(e) => setNewTag(e.target.value)}
                         size="sm"
                     />
-                </Grid.Col>
-                <Grid.Col span={4}>
+                </Grid.Col> */}
+                {/* <Grid.Col span={4}>
                     <Button
                         fullWidth
                         size="sm"
@@ -116,7 +168,7 @@ const AddPostForm = () => {
                     >
                         Add Tag
                     </Button>
-                </Grid.Col>
+                </Grid.Col> */}
 
                 {/* Submit button */}
                 <Grid.Col span={12}>

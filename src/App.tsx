@@ -3,7 +3,7 @@ import "@mantine/core/styles.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import NewsFeed from "./pages/NewsFeed";
 const NewsFeed = lazy(() => import('./pages/NewsFeed.js')); // Lazy-loaded for code-splitting
-import { About } from "./pages/About";
+import About from "./pages/About";
 const UsersList = lazy(() => import('./pages/UsersList.js'));
 // const MarkdownPreview = lazy(() => import('./MarkdownPreview.js'));
 
@@ -12,13 +12,16 @@ import Home from "./pages/Home";
 import UserDetails from "./components/UserDetails";
 import SignIn from "./pages/SignIn";
 import { LoadingOverlay } from "@mantine/core";
+import VideoPage from "./pages/VideoPage.js";
 
+import Formtest from "./pages/Formtest";
+import Formtest2 from "./pages/Formtest2.js";
 export const  App =() =>{
   return (
       <BrowserRouter>
         <Routes >
-          <Route path="/" element={<SignIn />} />
           <Route element={<RootLayout />} >
+            <Route path="/" element={<SignIn />} />
             <Route path="/home" element={<Home />} />
             <Route path="/feed" 
             element={
@@ -36,6 +39,9 @@ export const  App =() =>{
             <Route path="/about" element={<About />} />
             <Route path="/users" element={<Suspense fallback={<div>Loading...</div>} ><UsersList /> </Suspense>} />
             <Route path={`/users/:userId`} element={<UserDetails />} />
+            <Route path="/video" element={<VideoPage />} />
+            <Route path="/form" element={<Formtest />} />
+            <Route path="/form2" element={<Formtest2 />} />
             <Route path="*" element={<div>Not Found</div>} />
           </Route>
         </Routes>

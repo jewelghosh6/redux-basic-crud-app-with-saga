@@ -31,7 +31,7 @@ export const todoApi = createApi({
         };
       },
       forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg;
+        return !!(currentArg && previousArg && currentArg > previousArg);  // Force refetch if currentArg is greater than previousArg
       },
     }),
   }),

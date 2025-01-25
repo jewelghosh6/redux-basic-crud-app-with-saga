@@ -11,6 +11,7 @@ export const RootLayout = () => {
         <>
             <div className="navbar">
                 <span>Todo Count:{totalTodos}</span>
+                <span><Link className="nav-header-link" to="/video">Videos</Link></span>
                 <span><Link className="nav-header-link" to="/home">Home</Link></span>
                 <span><Link className="nav-header-link" to="/feed">Feed</Link></span>
                 <span><Link className="nav-header-link" to="/about">About</Link></span>

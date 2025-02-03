@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1 id="test">Test</h1>
+        <h2 id="julu">julu</h2>
+        <span id="counter">span</span>
+    </div>
+    <button id="btn">Click</button>
+    <script>
+        const test = document.getElementById("test");
+        const julu = document.getElementById("julu");
+        // console.log(test.);
+        console.log(julu);
+        const btn = document.getElementById("btn");
+        btn.addEventListener("click", () => {
+            console.log("click");
+            
+            test.style.color = "red";
+            julu.style.color = "blue";
+            test.innerText = "Hello";
+            const counter = document.getElementById("counter");
+            counter.innerText = "30";
+            
+            let countTimer=30;
+            const intervalID = setInterval(() => {
+                countTimer--;
+                counter.innerText = countTimer;
+                // console.log(countTimer);
+            }, 1000);
+    
+            setTimeout(() => {
+                clearInterval(intervalID);
+                console.log("Timer finished");
+            }, 30000);
+        })
+
+
+    </script>
+</body>
+</html>

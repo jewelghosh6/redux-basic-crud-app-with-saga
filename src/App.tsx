@@ -16,6 +16,7 @@ import VideoPage from "./pages/VideoPage.js";
 
 import Formtest from "./pages/Formtest";
 import Formtest2 from "./pages/Formtest2.js";
+import TestPage from "./pages/TestPage.js";
 export const  App =() =>{
   return (
       <BrowserRouter>
@@ -42,6 +43,7 @@ export const  App =() =>{
             <Route path="/video" element={<VideoPage />} />
             <Route path="/form" element={<Formtest />} />
             <Route path="/form2" element={<Formtest2 />} />
+            <Route path="/test" element={<TestPage />} />
             <Route path="*" element={<div>Not Found</div>} />
           </Route>
         </Routes>

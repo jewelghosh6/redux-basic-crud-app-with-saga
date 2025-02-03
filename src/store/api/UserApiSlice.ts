@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { User } from '../../types/types';
+import { get } from 'react-hook-form';
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
@@ -55,7 +56,27 @@ export const usersApi = createApi({
         }
       }  
     }),
+    getUsersByKeyword: builder.query<{ limit: number; skip: number; total: number; users: User[] },{ keyword: string; page: number }>({
+      query: ({ keyword, page }) => ({
+        url: "users/search",
+        method: "GET",
+        params: { limit: 10, skip: (page - 1) * 10, q: keyword },
+      }),
+      serializeQueryArgs: ({ endpointName, queryArgs }) => {
+        return `${endpointName}-${queryArgs.keyword}`; // Cache based on keyword + page
+      },
+      merge: (currentCache, newResponse) => {
+        return {
+          ...newResponse,
+          users: [...(currentCache?.users || []), ...newResponse.users], // Append users correctly
+        };
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg?.page! > previousArg?.page!; // Refetch if page changes
+      },
+    }),
+  
   }),
 });
 
-export const { useFetchUsersQuery, useUpdateUserMutation, useDeleteUserMutation} = usersApi;
+export const { useFetchUsersQuery, useUpdateUserMutation, useDeleteUserMutation, useLazyGetUsersByKeywordQuery} = usersApi;

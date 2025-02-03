@@ -30,6 +30,8 @@ const Home: React.FC = () => {
 
   // Use the custom hook for infinite scrolling
   const lastElRef = useInfiniteScroll(hasMore, isFetching, () => {
+    // Fetch more data when the last element is visible
+    console.log("Fetching more data... page "+Number(page+1));
     setPage((prevPage) => prevPage + 1);
   });
 
